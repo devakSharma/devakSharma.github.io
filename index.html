@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Devak Sharma — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c0f;
+    --bg2: #111318;
+    --bg3: #181c22;
+    --border: #1e2530;
+    --accent: #00d4ff;
+    --accent2: #7c3aed;
+    --text: #e8eaf0;
+    --muted: #5a6478;
+    --mid: #8b95a8;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* scanline overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,212,255,0.015) 2px,
+      rgba(0,212,255,0.015) 4px
+    );
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  /* grid bg */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    background: rgba(10,12,15,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  nav .inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 60px;
+  }
+
+  .hero-content {
+    padding: 6rem 0 4rem;
+  }
+
+  .hero-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .hero-label::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  h1 {
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+  }
+
+  .name-line {
+    display: block;
+    color: var(--text);
+  }
+
+  .name-accent {
+    display: block;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--accent);
+  }
+
+  .hero-desc {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--mid);
+    max-width: 520px;
+    line-height: 1.9;
+    margin-bottom: 3rem;
+  }
+
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    padding: 4px 12px;
+    border: 1px solid var(--border);
+    color: var(--mid);
+    letter-spacing: 0.08em;
+    background: var(--bg2);
+  }
+
+  .tag.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(0,212,255,0.05);
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 12px 28px;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #000;
+  }
+
+  .btn-primary:hover {
+    background: #fff;
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .btn-outline:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* SECTION COMMON */
+  section {
+    padding: 6rem 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 3rem;
+    line-height: 1;
+  }
+
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+
+  /* PROJECTS */
+  .projects-grid {
+    display: grid;
+    gap: 2px;
+  }
+
+  .project-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 0;
+    background: var(--accent);
+    transition: height 0.3s ease;
+  }
+
+  .project-card:hover::before { height: 100%; }
+  .project-card:hover { background: var(--bg3); border-color: rgba(0,212,255,0.3); }
+
+  .project-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .project-number {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  .project-links {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .project-link {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+
+  .project-link:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .project-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+    line-height: 1.1;
+  }
+
+  .project-subtitle {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+  }
+
+  .project-desc {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--mid);
+    line-height: 1.9;
+    margin-bottom: 1.5rem;
+  }
+
+  .project-highlights {
+    list-style: none;
+    margin-bottom: 1.5rem;
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .project-highlights li {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--mid);
+    padding-left: 1.25rem;
+    position: relative;
+    line-height: 1.7;
+  }
+
+  .project-highlights li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+
+  .project-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .tech-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    background: rgba(0,212,255,0.06);
+    border: 1px solid rgba(0,212,255,0.15);
+    color: var(--accent);
+    letter-spacing: 0.06em;
+  }
+
+  /* METRICS ROW */
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin: 1.5rem 0 0;
+    border-top: 1px solid var(--border);
+    padding-top: 1.5rem;
+  }
+
+  .metric {
+    text-align: center;
+  }
+
+  .metric-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.03em;
+    display: block;
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+
+  .metric-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .about-text p {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--mid);
+    line-height: 1.9;
+    margin-bottom: 1rem;
+  }
+
+  .skills-list {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .skill-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .skill-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .skill-items {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--mid);
+    line-height: 1.6;
+  }
+
+  /* CONTACT */
+  .contact-inner {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 3rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .contact-text h3 {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+
+  .contact-text p {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--mid);
+  }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: flex-end;
+  }
+
+  .contact-link {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--mid);
+    text-decoration: none;
+    letter-spacing: 0.06em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.2s;
+  }
+
+  .contact-link:hover { color: var(--accent); }
+
+  .contact-link-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--muted);
+    flex-shrink: 0;
+    transition: background 0.2s;
+  }
+
+  .contact-link:hover .contact-link-dot { background: var(--accent); }
+
+  /* FOOTER */
+  footer {
+    padding: 2rem 0;
+    border-top: 1px solid var(--border);
+    position: relative;
+    z-index: 1;
+  }
+
+  footer .inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer p {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-content > * {
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards;
+  }
+
+  .hero-label   { animation-delay: 0.1s; }
+  h1            { animation-delay: 0.2s; }
+  .hero-desc    { animation-delay: 0.3s; }
+  .hero-tags    { animation-delay: 0.4s; }
+  .hero-cta     { animation-delay: 0.5s; }
+
+  @media (max-width: 640px) {
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .contact-inner { grid-template-columns: 1fr; }
+    .contact-links { align-items: flex-start; }
+    .metrics { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <a class="nav-logo" href="#">DS_PORTFOLIO</a>
+    <ul class="nav-links">
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <div class="container">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-content">
+        <p class="hero-label">Computer Engineer — UCF 2026</p>
+        <h1>
+          <span class="name-line">Devak</span>
+          <span class="name-accent">Sharma</span>
+        </h1>
+        <p class="hero-desc">
+          Embedded systems engineer building hardware-software integrated solutions — from satellite autonomy to computer vision. Currently developing sensor payloads for LEO spacecraft.
+        </p>
+        <div class="hero-tags">
+          <span class="tag active">Embedded Systems</span>
+          <span class="tag active">Computer Vision</span>
+          <span class="tag active">Firmware</span>
+          <span class="tag">Python</span>
+          <span class="tag">C / C++</span>
+          <span class="tag">Raspberry Pi</span>
+          <span class="tag">PID Control</span>
+        </div>
+        <div class="hero-cta">
+          <a href="#projects" class="btn btn-primary">View Projects</a>
+          <a href="https://linkedin.com/in/devaksharma" target="_blank" class="btn btn-outline">LinkedIn ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <p class="section-label">Selected work</p>
+      <h2 class="section-title">Projects</h2>
+
+      <div class="projects-grid">
+
+        <!-- TURRET -->
+        <div class="project-card">
+          <div class="project-header">
+            <span class="project-number">01 — Senior Design / 2025–2026</span>
+            <div class="project-links">
+              <a href="https://github.com/csolanet/Group34-Senior-Design-fa2025sp2026" target="_blank" class="project-link">GitHub ↗</a>
+            </div>
+          </div>
+          <h3 class="project-title">Automated Turret</h3>
+          <p class="project-subtitle">Embedded · Computer Vision · Control Systems</p>
+          <p class="project-desc">
+            An autonomous targeting system that uses a YOLO object detection model to identify and track moving targets in real time, commanding a pan-tilt mechanism via a PID controller to lock on and engage with high accuracy.
+          </p>
+          <ul class="project-highlights">
+            <li>Deployed YOLOv8 for real-time color and object detection with live tracking feedback loop</li>
+            <li>PID controller handles pan/tilt under heavy payload; mitigates ESC motor and solenoid electrical noise</li>
+            <li>IMU + complementary filter fuses accelerometer and gyroscope data to isolate drift from vibration</li>
+            <li>Conducted full prototyping cycle and Critical Design Review (CDR) with technical peer panel</li>
+          </ul>
+          <div class="metrics">
+            <div class="metric">
+              <span class="metric-value">~2s</span>
+              <span class="metric-label">Target lock-on</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value">95%</span>
+              <span class="metric-label">Hit accuracy</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value">5°/s</span>
+              <span class="metric-label">Tracking speed</span>
+            </div>
+          </div>
+          <div class="project-tech" style="margin-top:1.5rem;">
+            <span class="tech-badge">C/C++</span>
+            <span class="tech-badge">Python</span>
+            <span class="tech-badge">YOLO</span>
+            <span class="tech-badge">OpenCV</span>
+            <span class="tech-badge">PID Control</span>
+            <span class="tech-badge">IMU</span>
+            <span class="tech-badge">ESC</span>
+            <span class="tech-badge">Solenoid</span>
+          </div>
+        </div>
+
+        <!-- DISEASE DATABASE -->
+        <div class="project-card">
+          <div class="project-header">
+            <span class="project-number">02 — Frontend / 2024</span>
+            <div class="project-links">
+              <a href="https://github.com/jonathan-field/disease-database" target="_blank" class="project-link">GitHub ↗</a>
+            </div>
+          </div>
+          <h3 class="project-title">Disease Database</h3>
+          <p class="project-subtitle">Frontend · React · UI/UX Design</p>
+          <p class="project-desc">
+            A study tool for premed students to look up diseases, symptoms, and treatments in a clean, organized interface. Contributed as the frontend engineer — responsible for design through implementation.
+          </p>
+          <ul class="project-highlights">
+            <li>Designed full UI/UX in Figma including layout, color system, and component hierarchy before writing a line of code</li>
+            <li>Implemented the frontend in React with HTML and CSS, translating Figma mockups pixel-accurately into working components</li>
+            <li>Built searchable, filterable disease entries with structured symptom and treatment data for fast student reference</li>
+          </ul>
+          <div class="project-tech" style="margin-top:1.5rem;">
+            <span class="tech-badge">React</span>
+            <span class="tech-badge">JavaScript</span>
+            <span class="tech-badge">HTML / CSS</span>
+            <span class="tech-badge">Figma</span>
+          </div>
+        </div>
+
+        <!-- TRAVEL APP -->
+        <div class="project-card">
+          <div class="project-header">
+            <span class="project-number">03 — Full Stack / 2024</span>
+            <div class="project-links">
+              <a href="https://github.com/Sebastian2956/TravelPlanning" target="_blank" class="project-link">GitHub ↗</a>
+            </div>
+          </div>
+          <h3 class="project-title">Travel Planning App</h3>
+          <p class="project-subtitle">Full Stack · REST API · React</p>
+          <p class="project-desc">
+            A full-featured travel booking platform similar to Kayak — enabling users to search, compare, and book flights and hotels through live third-party API integrations with a clean, responsive UI.
+          </p>
+          <ul class="project-highlights">
+            <li>Built MERN stack application with full CRUD operations for trip management and user accounts</li>
+            <li>Integrated Amadeus API for real-time flight and hotel availability, pricing, and booking</li>
+            <li>Developed responsive React + TypeScript frontend with component-driven architecture</li>
+            <li>Implemented JWT authentication and RESTful API backend in Node.js / Express</li>
+          </ul>
+          <div class="project-tech" style="margin-top:1.5rem;">
+            <span class="tech-badge">React</span>
+            <span class="tech-badge">TypeScript</span>
+            <span class="tech-badge">Node.js</span>
+            <span class="tech-badge">Express</span>
+            <span class="tech-badge">MongoDB</span>
+            <span class="tech-badge">Amadeus API</span>
+            <span class="tech-badge">JWT Auth</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- ABOUT -->
+    <section id="about">
+      <p class="section-label">Background</p>
+      <h2 class="section-title">About</h2>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>
+            Computer Engineering graduate from UCF (May 2026) with a minor in Intelligent Robotic Systems. I work at the intersection of hardware and software — designing systems where firmware, sensors, and control logic have to work together reliably in the real world.
+          </p>
+          <p>
+            Started as an intern at a space systems company and was brought on part-time — writing Python automation for RPOD missions in LEO and contributing to embedded sensor hardware development on Raspberry Pi 5 for satellite payloads — using OpenCV for computer vision tasks in support of autonomous docking. Sensor work is proprietary and lives in a private repo.
+          </p>
+          <p>
+            I'm drawn to problems where electrical noise, physical constraints, and real-time requirements all have to be solved at once.
+          </p>
+          <div style="margin-top:1.5rem;">
+            <a href="Devak_Sharma_Resume.docx" class="btn btn-outline" style="display:inline-block;">Download Resume</a>
+          </div>
+        </div>
+        <div class="skills-list">
+          <div class="skill-row">
+            <span class="skill-label">Languages</span>
+            <span class="skill-items">C, C++, Python, Java, JavaScript, TypeScript, MATLAB</span>
+          </div>
+          <div class="skill-row">
+            <span class="skill-label">Embedded / Hardware</span>
+            <span class="skill-items">Raspberry Pi 5, TI MSP430, PCB Design (Autodesk Fusion), UART / SPI / I2C, GPIO, Oscilloscope, Soldering</span>
+          </div>
+          <div class="skill-row">
+            <span class="skill-label">Software & Tools</span>
+            <span class="skill-items">OpenCV, YOLO, Git, Linux, Code Composer Studio, React, Node.js, VS Code</span>
+          </div>
+          <div class="skill-row">
+            <span class="skill-label">Concepts</span>
+            <span class="skill-items">RPOD Autonomy, PID Control, IMU Sensor Fusion, Firmware Development, Hardware-Software Co-design, Computer Vision</span>
+          </div>
+          <div class="skill-row">
+            <span class="skill-label">Education</span>
+            <span class="skill-items">B.S. Computer Engineering — UCF, May 2026 · GPA 3.4 · Minor: Intelligent Robotic Systems</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="contact-inner">
+        <div class="contact-text">
+          <h3>Let's connect.</h3>
+          <p>Open to embedded software and software engineering opportunities.</p>
+        </div>
+        <div class="contact-links">
+          <a href="https://linkedin.com/in/devaksharma" target="_blank" class="contact-link">
+            <span class="contact-link-dot"></span>
+            linkedin.com/in/devaksharma
+          </a>
+          <a href="https://github.com/devaksharma" target="_blank" class="contact-link">
+            <span class="contact-link-dot"></span>
+            github.com/devaksharma
+          </a>
+          <a href="mailto:devak@email.com" class="contact-link">
+            <span class="contact-link-dot"></span>
+            devak@email.com
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="inner">
+    <p>© 2026 Devak Sharma</p>
+    <p>Built with HTML / CSS / JS</p>
+  </div>
+</footer>
+
+</body>
+</html>
